@@ -14,6 +14,7 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", indexHandler)
 	r.HandleFunc("/md/{name}", mdNamedHandler)
+	fmt.Println("Server have started")
 	http.ListenAndServe(":3000", r)
 }
 
