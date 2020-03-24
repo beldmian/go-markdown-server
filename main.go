@@ -24,7 +24,7 @@ func main() {
 	r.HandleFunc("/post/{name}", mdNamedHandler)
 	r.HandleFunc("/add", addHandler)
 	fmt.Println("Server have started")
-	http.ListenAndServe(":3000", r)
+	http.ListenAndServe(":"+os.Getenv("PORT"), r)
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
