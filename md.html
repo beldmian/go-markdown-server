@@ -7,9 +7,59 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Markdown Server</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata&family=Montserrat:wght@400;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .side {
+            background-color:rgb(44, 53, 189);
+            position: fixed;
+            min-height: 100%;
+            width: 15rem;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            font-family: 'Inconsolata', monospace;
+            color: #fff;
+            font-weight: 500;
+            padding: 1.5rem;
+            padding-top: 10rem;
+        }
+        .menu {
+            list-style: none;
+        }
+        .menu-item a {
+            color: #fff;
+            font-size: 25px;
+        }
+        .content {
+            max-width: 45rem;
+            margin-left: 28rem;
+            margin-top: 6rem;
+            font-family: 'Montserrat', sans-serif;
+            font-size: large;
+        }
+        h1 {
+            font-size: 80px;
+            font-weight: 800;
+        }
+        code {
+            background-color: rgb(221, 221, 221);
+            padding: 1rem;
+        }
+    </style>
 </head>
 <body>
-    <div class="container my-5">{{.}}</div>
+    <div class="side">
+        <h3><strong>ls</strong> -a /life | <strong>grep</strong> fun</h3>
+        <ul class="menu">
+            <li class="menu-item"><a href=""><strong>cd</strong> home</a></li>
+            <li class="menu-item"><a href=""><strong>cd</strong> about</a></li>
+            <li class="menu-item"><a href=""><strong>cd</strong> github</a></li>
+        </ul>    
+    </div>
+    <div class="content">        
+        {{.}}
+    </div>
 </body>
 </html>
 {{end}}

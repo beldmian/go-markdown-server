@@ -1,6 +1,2 @@
-# Markdown Server
+# Home
 ---
-
-- [Main](/md/main)
-- [Code](/md/code)
-- [Test](/md/test)
