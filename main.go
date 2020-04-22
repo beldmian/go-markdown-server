@@ -59,9 +59,16 @@ func main() {
 func indexHandler(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 	defer cancel()
-	cursor, err := collection.Find(ctx, bson.D{})
+	opts := options.Find()
+	opts.SetSort(bson.D{{"_id", -1}})
+	cursor, err := collection.Find(ctx, bson.D{}, opts)
 	if err != nil {
-		log.Fatal(err)
+		log.Panic(err)
+		text := `# Error 500
+Internal server error`
+		tmpl := template.Must(template.ParseFiles("md.html"))
+		output := template.HTML(string(blackfriday.Run([]byte(text))))
+		tmpl.ExecuteTemplate(w, "md", output)
 	}
 	out := "# Home\n---\n"
 	ctx5, cancel5 := context.WithTimeout(context.Background(), 5*time.Second)
@@ -70,14 +77,24 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 		var post CreateRequest
 		err := cursor.Decode(&post)
 		if err != nil {
-			log.Fatal(err)
+			log.Panic(err)
+			text := `# Error 500
+Internal server error`
+			tmpl := template.Must(template.ParseFiles("md.html"))
+			output := template.HTML(string(blackfriday.Run([]byte(text))))
+			tmpl.ExecuteTemplate(w, "md", output)
 		}
 		out += "- [" + post.Title + "](/post/" + post.URL + ")\n"
 	}
 	tmpl := template.Must(template.ParseFiles("md.html"))
 	output := template.HTML(string(blackfriday.Run([]byte(out))))
 	if err := tmpl.ExecuteTemplate(w, "md", output); err != nil {
-		log.Fatal(err)
+		log.Panic(err)
+		text := `# Error 500
+Internal server error`
+		tmpl := template.Must(template.ParseFiles("md.html"))
+		output := template.HTML(string(blackfriday.Run([]byte(text))))
+		tmpl.ExecuteTemplate(w, "md", output)
 	}
 }
 func mdNamedHandler(w http.ResponseWriter, r *http.Request) {
@@ -87,7 +104,11 @@ func mdNamedHandler(w http.ResponseWriter, r *http.Request) {
 	filter := bson.M{"url": vars["name"]}
 	var post CreateRequest
 	if err := collection.FindOne(ctx, filter).Decode(&post); err != nil {
-		log.Fatal(err)
+		text := `# Error 404
+This page not found`
+		tmpl := template.Must(template.ParseFiles("md.html"))
+		output := template.HTML(string(blackfriday.Run([]byte(text))))
+		tmpl.ExecuteTemplate(w, "md", output)
 	}
 	tmpl := template.Must(template.ParseFiles("md.html"))
 	output := template.HTML(string(blackfriday.Run([]byte(post.Body))))
