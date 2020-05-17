@@ -22,7 +22,8 @@ type Post struct {
 func ConnectToDB() (*mongo.Collection, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb+srv://beld:124252@cluster0-wmuco.mongodb.net/blog"))
+	// mongodb+srv://beld:124252@cluster0-wmuco.mongodb.net/blog
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://mongo:27017/go-markdown-server"))
 	if err != nil {
 		return nil, err
 	}

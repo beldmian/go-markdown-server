@@ -36,13 +36,13 @@ func mdNamedHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func addHandler(w http.ResponseWriter, r *http.Request) {
-	v := mux.Vars(r)
+	v := r.URL.Query()
 	post := db.Post{
-		Title: v["title"],
-		URL:   v["url"],
-		Body:  v["body"],
+		Title: v["title"][0],
+		URL:   v["url"][0],
+		Body:  v["body"][0],
 	}
-	_, err := db.InsertPost(collection, post, v["key"])
+	_, err := db.InsertPost(collection, post, v["key"][0])
 	if err != nil {
 		w.Write([]byte(err.Error()))
 		return
